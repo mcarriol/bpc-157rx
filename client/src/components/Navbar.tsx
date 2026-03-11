@@ -6,6 +6,8 @@
 */
 import { useEffect, useState } from "react";
 
+const DARK_ORANGE = "#D2570A";
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,7 +53,9 @@ export default function Navbar() {
             letterSpacing: "0.1em",
             color: "#F5F0E8",
             textTransform: "uppercase",
-          }}>MitochondrialRx</span>
+          }}>
+            Mitochondrial<span style={{ color: DARK_ORANGE }}>Rx</span>
+          </span>
           <span style={{
             display: "block",
             fontFamily: "'DM Sans', system-ui, sans-serif",
@@ -65,7 +69,7 @@ export default function Navbar() {
         </div>
       </a>
 
-      {/* Desktop Nav Links */}
+      {/* Desktop Nav Links — hidden on mobile */}
       <ul style={{
         display: "flex",
         alignItems: "center",
@@ -101,7 +105,7 @@ export default function Navbar() {
         ))}
       </ul>
 
-      {/* CTA Buttons */}
+      {/* CTA Buttons — hidden on mobile */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }} className="hidden md:flex">
         <a href="#quiz" className="btn-ghost-cream" style={{ padding: "10px 20px", fontSize: "0.875rem" }}>
           Check Eligibility
@@ -111,7 +115,7 @@ export default function Navbar() {
         </a>
       </div>
 
-      {/* Mobile Hamburger */}
+      {/* Mobile Hamburger — only visible on mobile (hidden on md and above) */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
         style={{
@@ -119,7 +123,6 @@ export default function Navbar() {
           border: "none",
           cursor: "pointer",
           padding: 8,
-          display: "flex",
           flexDirection: "column",
           gap: 5,
         }}

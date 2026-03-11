@@ -11,6 +11,8 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 
+const DARK_ORANGE = "#D2570A";
+
 const DM = "'DM Sans', system-ui, sans-serif";
 
 const IMGS = {
@@ -404,7 +406,7 @@ export default function MitochondrialRx() {
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
             <a href="https://aureliushealth-cqjijuxa.manus.space" style={{ ...s.label, color: "rgba(201,169,110,0.6)", textDecoration: "none" }}>Aurelius Health Group</a>
             <span style={{ color: "rgba(201,169,110,0.4)", fontSize: "0.7rem" }}>›</span>
-            <span style={{ ...s.label }}>MitochondrialRx</span>
+            <span style={{ ...s.label }}>Mitochondrial<span style={{ color: DARK_ORANGE }}>Rx</span></span>
           </div>
           <h1 style={{ ...s.h1, maxWidth: 700, marginBottom: 24 }}>
             The mitokine your<br />mitochondria stopped<br />making at 40.
@@ -865,7 +867,7 @@ export default function MitochondrialRx() {
                   <line x1="24" y1="20" x2="24" y2="44" stroke="#C9A96E" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
                 <div>
-                  <span style={{ fontFamily: DM, fontWeight: 500, fontSize: "0.875rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#F5F0E8", display: "block" }}>MitochondrialRx</span>
+                  <span style={{ fontFamily: DM, fontWeight: 500, fontSize: "0.875rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#F5F0E8", display: "block" }}>Mitochondrial<span style={{ color: DARK_ORANGE }}>Rx</span></span>
                   <span style={{ fontFamily: DM, fontWeight: 300, fontSize: "0.6rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#8C7B6B" }}>Aurelius Health Group</span>
                 </div>
               </div>
