@@ -1,4 +1,6 @@
 {
+  "buildCommand": "cd client && pnpm install && pnpm build",
+  "outputDirectory": "client/dist/public",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
