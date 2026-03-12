@@ -1,22 +1,48 @@
-/* MitochondrialRx — Standalone Navbar
+/* BPC-157Rx — Standalone Navbar
    Typography: DM Sans (geometric sans-serif)
    Logo wordmark: weight 600, wide tracking
    Nav links: weight 400
    CTA buttons: weight 500
+
+   Context-aware routing:
+   - On "/" (main page): anchor links like #problem scroll within the page
+   - On "/peptides": anchor links become "/#problem" to navigate back + scroll
 */
 import { useEffect, useState } from "react";
 
 const DARK_ORANGE = "#D2570A";
 
-export default function Navbar() {
+interface NavbarProps {
+  productName?: string;
+}
+
+export default function Navbar({ productName }: NavbarProps = {}) {
+  // Parse product name: split on last "Rx" for colored suffix
+  const rxIdx = productName ? productName.lastIndexOf("Rx") : -1;
+  const baseName = productName && rxIdx !== -1 ? productName.slice(0, rxIdx) : (productName || "Mitochondrial");
+  const suffix = productName && rxIdx !== -1 ? "Rx" : "Rx";
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Detect if we're on the peptides page
+  const onPeptidesPage = typeof window !== "undefined" && window.location.pathname === "/peptides";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Build href: if on peptides page, prefix anchor links with "/"
+  const href = (anchor: string) => onPeptidesPage ? `/${anchor}` : anchor;
+
+  const navLinks = [
+    { label: "The Problem", anchor: "#problem" },
+    { label: "Mechanism",   anchor: "#mechanism" },
+    { label: "Research",    anchor: "#research" },
+    { label: "Pricing",     anchor: "#pricing" },
+    { label: "FAQ",         anchor: "#faq" },
+  ];
 
   return (
     <nav
@@ -54,7 +80,7 @@ export default function Navbar() {
             color: "#F5F0E8",
             textTransform: "uppercase",
           }}>
-            Mitochondrial<span style={{ color: DARK_ORANGE }}>Rx</span>
+            {baseName}<span style={{ color: DARK_ORANGE }}>{suffix}</span>
           </span>
           <span style={{
             display: "block",
@@ -73,21 +99,15 @@ export default function Navbar() {
       <ul style={{
         display: "flex",
         alignItems: "center",
-        gap: 32,
+        gap: 28,
         listStyle: "none",
         margin: 0,
         padding: 0,
       }} className="hidden md:flex">
-        {[
-          { label: "The Problem", href: "#problem" },
-          { label: "Mechanism", href: "#mechanism" },
-          { label: "Research", href: "#research" },
-          { label: "Pricing", href: "#pricing" },
-          { label: "FAQ", href: "#faq" },
-        ].map((link) => (
+        {navLinks.map((link) => (
           <li key={link.label}>
             <a
-              href={link.href}
+              href={href(link.anchor)}
               style={{
                 fontFamily: "'DM Sans', system-ui, sans-serif",
                 fontSize: "0.875rem",
@@ -103,14 +123,42 @@ export default function Navbar() {
             </a>
           </li>
         ))}
+        {/* Discover Peptides — gold pill */}
+        <li>
+          <a
+            href="/peptides"
+            style={{
+              fontFamily: "'DM Sans', system-ui, sans-serif",
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              color: onPeptidesPage ? "#F5F0E8" : "#C9A96E",
+              textDecoration: "none",
+              transition: "color 0.2s, background 0.2s",
+              border: "1px solid rgba(201,169,110,0.3)",
+              borderRadius: 5,
+              padding: "5px 12px",
+              background: onPeptidesPage ? "rgba(201,169,110,0.15)" : "transparent",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#F5F0E8";
+              e.currentTarget.style.background = "rgba(201,169,110,0.15)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = onPeptidesPage ? "#F5F0E8" : "#C9A96E";
+              e.currentTarget.style.background = onPeptidesPage ? "rgba(201,169,110,0.15)" : "transparent";
+            }}
+          >
+            Discover Peptides
+          </a>
+        </li>
       </ul>
 
       {/* CTA Buttons — hidden on mobile */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }} className="hidden md:flex">
-        <a href="#quiz" className="btn-ghost-cream" style={{ padding: "10px 20px", fontSize: "0.875rem" }}>
+        <a href={href("#quiz")} className="btn-ghost-cream" style={{ padding: "10px 20px", fontSize: "0.875rem" }}>
           Check Eligibility
         </a>
-        <a href="#quiz" className="btn-gold" style={{ padding: "10px 20px", fontSize: "0.875rem" }}>
+        <a href={href("#quiz")} className="btn-gold" style={{ padding: "10px 20px", fontSize: "0.875rem" }}>
           Get Started
         </a>
       </div>
@@ -155,34 +203,50 @@ export default function Navbar() {
           display: "flex",
           flexDirection: "column",
           gap: 20,
+          zIndex: 99,
+          overflowY: "auto",
         }}>
-          {[
-            { label: "The Problem", href: "#problem" },
-            { label: "Mechanism", href: "#mechanism" },
-            { label: "Research", href: "#research" },
-            { label: "Pricing", href: "#pricing" },
-            { label: "FAQ", href: "#faq" },
-          ].map((link) => (
+          {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.href}
+              href={href(link.anchor)}
               onClick={() => setMenuOpen(false)}
               style={{
                 fontFamily: "'DM Sans', system-ui, sans-serif",
-                fontSize: "1rem",
+                fontSize: "1.125rem",
                 fontWeight: 400,
                 color: "rgba(245,240,232,0.8)",
                 textDecoration: "none",
+                padding: "16px 0",
+                borderBottom: "1px solid rgba(245,240,232,0.06)",
+                display: "block",
               }}
             >
               {link.label}
             </a>
           ))}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8 }}>
-            <a href="#quiz" onClick={() => setMenuOpen(false)} className="btn-ghost-cream" style={{ justifyContent: "center" }}>
+          {/* Discover Peptides mobile link */}
+          <a
+            href="/peptides"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              fontFamily: "'DM Sans', system-ui, sans-serif",
+              fontSize: "1.125rem",
+              fontWeight: 500,
+              color: "#C9A96E",
+              textDecoration: "none",
+              padding: "16px 0",
+              borderBottom: "1px solid rgba(245,240,232,0.06)",
+              display: "block",
+            }}
+          >
+            Discover Peptides
+          </a>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 32 }}>
+            <a href={href("#quiz")} onClick={() => setMenuOpen(false)} className="btn-ghost-cream" style={{ justifyContent: "center", textAlign: "center" }}>
               Check Eligibility
             </a>
-            <a href="#quiz" onClick={() => setMenuOpen(false)} className="btn-gold" style={{ justifyContent: "center" }}>
+            <a href={href("#quiz")} onClick={() => setMenuOpen(false)} className="btn-gold" style={{ justifyContent: "center", textAlign: "center" }}>
               Get Started
             </a>
           </div>

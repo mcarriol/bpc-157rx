@@ -4,12 +4,14 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import MitochondrialRx from "./pages/MitochondrialRx";
+import BPC157Rx from "./pages/BPC157Rx";
+import Peptides from "./pages/Peptides";
 
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={MitochondrialRx} />
+      <Route path={"/"} component={BPC157Rx} />
+      <Route path={"/peptides"} component={Peptides} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
